@@ -3,20 +3,16 @@ from loguru import logger
 import requests
 import time
 
-getURL = "http://172.20.170.52:3000/temp"
+getURL = "http://172.20.108.153:3000/temp/room311/latest"
 
-currentTemperature = 0
-
-fan = LED(13)
+fan = LED(26)
 
 @logger.catch
 def getTemperature():
     logger.info("getting Temperature..")
-    response = requests.get(getURL, timeout=10)
-    logger.debug(response)
-    responseJson = response.json()
-    logger.debug(responseJson)
-    temperature = response.json()['celsius']
+    response = requests.get(getURL, timeout=10) # Execute the request and save it in response
+    logger.debug(response.json())
+    temperature = response.json()['celsius'] # Extract the celsius temperature from the response Json Data
     logger.info("received Temperature: " + str(temperature))
     return temperature
 
@@ -36,7 +32,7 @@ while True:
         logger.error("temperature Type is wrong, changing it to 0")
         currentTemperature = 0
 
-    if currentTemperature > 23:
+    if currentTemperature > 24:
         activateFan(True)
     else:
         activateFan(False)

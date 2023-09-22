@@ -8,12 +8,17 @@ device_folder = glob.glob(base_dir + '28*')[0]
 device_file = device_folder + '/w1_slave'
 
 postRequests = True
-postUrl = 'http://172.20.170.52:3000/temp'
+postUrl = 'http://172.20.108.153:3000/temp/room311'
 
 @logger.catch
 def postRequest(temperature):
         logger.info("sending temperature..")
-        response = requests.post(postUrl, json={'celsius': temperature}, timeout=10)
+        # Generate the correct json Body
+        jsonBody = {
+                'celsius': temperature
+                }
+        # Execute the post request with the correct json data and save the response
+        response = requests.post(postUrl, json=jsonBody, timeout=10)
         logger.debug(response.json())
 
 @logger.catch
